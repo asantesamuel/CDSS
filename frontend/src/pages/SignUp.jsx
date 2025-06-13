@@ -40,13 +40,7 @@ const SignUp = () => {
 
     // Function to show and hide password
     const showHide = () => {
-        let password = document.getElementById("password");
-        if(password.type == "password") {
-            password.setAttribute("type", "text");
-        }else if(password.type == "text") {
-            password.setAttribute("type", "password");
-        }
-        setShowing(!showing);
+        setShowing(prev => !prev);
     }
 
     // Function to send info to database
@@ -124,7 +118,7 @@ const SignUp = () => {
                 <div className='flex flex-col items-start justify-center w-full'>
                     <label htmlFor="password" className='text-lg font-semibold cursor-pointer'>Password</label>
                     <div className='flex flex-row items-center justify-between outline-1 outline-gray-500 p-1 rounded-xs w-full font-semibold'>
-                        <input type="password" name="password" id="password" className='p-0 outline-none w-full' onChange={(e) => setPassword(e.target.value)} required />
+                        <input type={showing? "text" : "password"} name="password" id="password" className='p-0 outline-none w-full' onChange={(e) => setPassword(e.target.value)} required />
                         {!showing ? <FaRegEye className='cursor-pointer' title='show password' size='1.4em' onClick={showHide} /> : <FaRegEyeSlash className='cursor-pointer' title='hide password' size='1.4em' onClick={showHide} />}
                     </div>
                     <ul className='list-disc list-inside'>

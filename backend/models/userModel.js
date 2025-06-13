@@ -23,7 +23,14 @@ const userSchema = mongoose.Schema({
     password: {
         type: String,
         required: true
-    }
+    },
+    history: [
+        {
+            image: String,
+            confidence: String,
+            inference: String
+        }
+    ]
 },
 {
     timestamps: true
