@@ -9,6 +9,7 @@ const Upload = () => {
     const id = localStorage.getItem("id");
 
     const [scan, setScan] = useState("");
+    const [result, setResult] = useState(false);
 
     const navigate = useNavigate();
 
@@ -55,30 +56,38 @@ const Upload = () => {
         label.classList.remove("drag");
         label.innerHTML = "Drag file over or click to select file";
         if(e.dataTransfer.files.length > 0 && checkDrop(e.dataTransfer.files[0].name)) {
-            // alert(JSON.stringify(e.dataTransfer.files[0].name));
             setScan(e.dataTransfer.files[0]);
+            // setResult(true);
         }else {
             alert("Drop an image file to upload")
         }
-        console.log(e.dataTransfer.files[0])
     }
 
     return (
-        <div className='min-h-screen bg-blue-50 flex flex-col items-center justify-start'>
+        <div className='min-h-screen bg-primary-50 flex flex-col items-center justify-start'>
 
-            <BiCaretLeft onClick={() => navigate(-1)} size='4em' className='self-start p-4 cursor-pointer duration-300 hover:text-gray-400' />
+            {!result && (
+                <>
+                    <BiCaretLeft onClick={() => navigate(-1)} size='4em' className='self-start p-4 cursor-pointer duration-300 hover:text-gray-400' />
 
-            <div className='flex flex-col items-center justify-center p-3'>
-                <h1 className='text-2xl text-blue-600 font-bold'>Upload</h1>
-                <p className='text-sm'><span className='text-red-500'>*</span>Upload a CCT scan for inference</p>
-            </div>
-            {/* <button onClick={() => console.log(scan)}>log scan</button> */}
-            <label htmlFor="image" id='label' onDragOver={over} onDragLeave={leave} onDrop={drop}>
-                <p>Drag file over or click to select file</p>
-            </label>
-            <input type="file" name="image" id="image" className='hidden' onChange={(e) => setScan(e.target.files[0])} />
+                    <div className='flex flex-col items-center justify-center p-3'>
+                        <h1 className='text-2xl text-blue-600 font-bold'>Upload</h1>
+                        <p className='text-sm'><span className='text-red-500'>*</span>Upload a CCT scan for inference</p>
+                    </div>
+                    {/* <button onClick={() => console.log(scan)}>log scan</button> */}
+                    <label htmlFor="image" id='label' onDragOver={over} onDragLeave={leave} onDrop={drop}>
+                        <p>Drag file over or click to select file</p>
+                    </label>
+                    <input type="file" name="image" id="image" className='hidden' onChange={(e) => setScan(e.target.files[0])} />
 
-            <p><span className='font-bold'>Image Selected:</span> {scan.name}</p>
+                    <p><span className='font-bold'>Image Selected:</span> {scan.name}</p>
+                </>
+            )}
+            {result && (
+                <>
+                    <p>Results will show here for {scan.name}</p>
+                </>
+            )}
             
         </div>
     )

@@ -1,5 +1,16 @@
 @import "tailwindcss";
 
+@theme {
+    --color-primary-900: #ffa500;
+    --color-primary-600: #f8bc4b;
+    --color-primary-400: #fcce78;
+    --color-primary-200: #f3cc82;
+    --color-primary-50: #fdfaf5;
+    --color-secondary: #ffffff;
+    --color-black-1: #121212;
+    --color-white-1: #fefefe;
+}
+
 @font-face {
     font-family: 'Montserrat';
     src: url('./assets/Montserrat-VariableFont_wght.ttf');
@@ -7,4 +18,5 @@
 
 body {
     font-family: 'Montserrat';
+    /* background: #fcce78; */
 }

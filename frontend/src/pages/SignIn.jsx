@@ -31,7 +31,7 @@ const SignIn = () => {
             .then(res => {
                 localStorage.setItem("id", res.data._id);
                 setLoading(false);
-                alert("Login was successful.");
+                // alert("Login was successful.");
                 navigate("/dashboard");
             })
             .catch(err => {
