@@ -91,4 +91,32 @@ userRouter.get('/get-info/:id', async (req, res) => {
     }
 })
 
+// Add to history
+userRouter.put('/add-to-history/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { history } = req.body;
+
+        const data = {
+            history: history
+        }
+
+        const added = userModel.findByIdAndUpdate(id, { $push: { history: data } }, { new: true, upsert: true } );
+
+        return res.status(201).send("Scan successfully added to history");
+    } catch (error) {
+        if(error.name === "MongoNetworkError" || error.name === "MongoServerSelectionError") {
+            return res.status(503).send({
+                message: "Something went wrong. Kindly check your internet and try again.",
+                name: "network"
+            });
+        }
+
+        return res.status(500).send({
+            message: "Something went wrong. Kindly try again later.",
+            name: "unknown"
+        });
+    }
+})
+
 export default userRouter

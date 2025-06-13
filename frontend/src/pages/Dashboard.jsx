@@ -136,7 +136,7 @@ const Dashboard = () => {
                             <p>Description</p>
                             <BsInfoCircle color='white' size='3em' className='bg-blue-600 h-full absolute right-0 top-0 rounded-tl-full rounded-bl-full p-3' />
                         </Link>
-                        <Link to='upload' className='relative bg-gradient-to-r from-blue-500 to-blue-200 text-white p-5 w-full sm:w-1/4 grow h-24 flex items-center justify-start rounded duration-300 sm:hover:to-blue-300 sm:hover:shadow-md active:translate-y-0.5'>
+                        <Link to='/profile' className='relative bg-gradient-to-r from-blue-500 to-blue-200 text-white p-5 w-full sm:w-1/4 grow h-24 flex items-center justify-start rounded duration-300 sm:hover:to-blue-300 sm:hover:shadow-md active:translate-y-0.5'>
                             <p>Profile</p>
                             <MdPerson color='white' size='3em' className='bg-blue-600 h-full absolute right-0 top-0 rounded-tl-full rounded-bl-full p-3' />
                         </Link>

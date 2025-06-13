@@ -1,0 +1,24 @@
+#label {
+    appearance: none;
+    width: 250px;
+    height: 250px;
+    padding: 8px;
+    border-radius: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: white;
+    box-shadow: 0px 0px 6px 4px rgba(0, 0, 0, 0.1);
+}
+
+.drag {
+    font-weight: bolder;
+    outline: 2px dashed gray;
+    animation: ping 1s infinite;
+}
+@keyframes ping {
+    from{box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.1);}
+    to{box-shadow: 0px 0px 8px 18px rgba(100, 100, 100, 0.2); background: -webkit-angle-gradient(red, yellow);}
+}
