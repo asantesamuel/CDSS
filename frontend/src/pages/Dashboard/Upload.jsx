@@ -60,6 +60,7 @@ const Upload = () => {
         }else {
             alert("Drop an image file to upload")
         }
+        console.log(e.dataTransfer.files[0])
     }
 
     return (
@@ -76,6 +77,8 @@ const Upload = () => {
                 <p>Drag file over or click to select file</p>
             </label>
             <input type="file" name="image" id="image" className='hidden' onChange={(e) => setScan(e.target.files[0])} />
+
+            <p><span className='font-bold'>Image Selected:</span> {scan.name}</p>
             
         </div>
     )
