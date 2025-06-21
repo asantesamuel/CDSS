@@ -11,19 +11,19 @@ import Profile from './pages/Profile'
 
 const Navigation = () => {
     return (
-        <BrowserRouter>
-            <Routes>
-                <Route path='*' Component={NotFound} />
-                <Route path='/' Component={SignIn} />
-                <Route path='/dashboard' Component={Dashboard} />
-                <Route path='/description' Component={Description} />
-                <Route path='/dashboard/history' Component={History} />
-                <Route path='/dashboard/upload' Component={Upload} />
-                <Route path='/signup' Component={SignUp} />
-                <Route path='/profile' Component={Profile} />
-            </Routes>
-        </BrowserRouter>
-    )
+      <BrowserRouter>
+        <Routes>
+          <Route path="*" Component={NotFound} />
+          <Route path="/" Component={SignIn} />
+          <Route path="/dashboard" Component={Dashboard} />
+          <Route path="/dashboard/description" Component={Description} />
+          <Route path="/dashboard/history" Component={History} />
+          <Route path="/dashboard/upload" Component={Upload} />
+          <Route path="/signup" Component={SignUp} />
+          <Route path="/profile" Component={Profile} />
+        </Routes>
+      </BrowserRouter>
+    );
 }
 
 export default Navigation
