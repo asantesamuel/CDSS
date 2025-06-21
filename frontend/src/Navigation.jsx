@@ -7,6 +7,7 @@ import Dashboard from './pages/Dashboard'
 import History from './pages/Dashboard/History'
 import Upload from './pages/Dashboard/Upload'
 import Description from './pages/Description'
+import Profile from './pages/Profile'
 
 const Navigation = () => {
     return (
@@ -19,6 +20,7 @@ const Navigation = () => {
                 <Route path='/dashboard/history' Component={History} />
                 <Route path='/dashboard/upload' Component={Upload} />
                 <Route path='/signup' Component={SignUp} />
+                <Route path='/profile' Component={Profile} />
             </Routes>
         </BrowserRouter>
     )
