@@ -8,6 +8,7 @@ import History from './pages/Dashboard/History'
 import Upload from './pages/Dashboard/Upload'
 import Description from './pages/Description'
 import Profile from './pages/Profile'
+import ForgotPassword from './pages/ForgotPassword'
 
 const Navigation = () => {
     return (
@@ -21,6 +22,7 @@ const Navigation = () => {
           <Route path="/dashboard/upload" Component={Upload} />
           <Route path="/signup" Component={SignUp} />
           <Route path="/profile" Component={Profile} />
+          <Route path="/reset-password" Component={ForgotPassword} />
         </Routes>
       </BrowserRouter>
     );

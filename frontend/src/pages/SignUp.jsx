@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import patterns from '../assets/1311314_414.jpg';
-import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa6';
+import medicalBg from '../assets/1311314_414.jpg';
 import axios from 'axios';
+import { FaCheck, FaTimes, FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const SignUp = () => {
 
@@ -64,7 +64,6 @@ const SignUp = () => {
                 .post('http://localhost:5555/user/signup', data)
                 .then(res => {
                     setLoading(false);
-                    alert("Account was created successfully");
                     localStorage.setItem("id", res.data._id);
                     navigate("/dashboard");
                 })
@@ -80,74 +79,96 @@ const SignUp = () => {
     }
 
     return (
-        <div className='flex md:flex-row flex-col items-center justify-center'>
-            <div className='w-full md:w-1/2 md:h-dvh'>
-                <img src={patterns} alt="Patterns" className='h-40 md:h-full w-full object-cover' />
+        <div className='min-h-screen w-full flex'>
+            {/* Left side with image and branding */}
+            <div className='relative hidden md:flex md:w-1/2 items-center justify-center bg-gray-800'>
+                <img src={medicalBg} alt="Medical background" className='absolute h-full w-full object-cover opacity-20' />
+                <div className='relative z-10 text-center text-white p-8'>
+                    <h1 className='text-5xl font-extrabold mb-4'>CDSS</h1>
+                    <p className='text-xl text-gray-300'>Create an account to begin your journey with AI-assisted diagnostics.</p>
+                </div>
             </div>
 
-            {/* Actual Form */}
-            <form onSubmit={createAccount} className='flex flex-col items-center justify-center gap-4 w-full md:w-1/2 p-8'>
-                <h2 className='font-bold text-2xl'><abbr title="Clinic Decision Support System" className='cursor-pointer'>CDSS</abbr> Sign Up</h2>
-                <p className='text-center'><Link to='/' className='font-semibold underline text-blue-500'>Login to your account</Link> or create a new one here.</p>
-
-                {/* fname => fullname */}
-                <div className='flex flex-col items-start justify-center w-full'>
-                    <label htmlFor="fname" className='text-lg font-semibold cursor-pointer'>Fullname</label>
-                    <input type="text" name="fname" id="fname" autoFocus className='outline-1 outline-gray-500 p-1 rounded-xs w-full font-semibold' onChange={(e) => setFullname(e.target.value)} required />
-                </div>
-
-                <div className='flex flex-col items-start justify-center w-full'>
-                    <label htmlFor="email" className='text-lg font-semibold cursor-pointer'>Email Address</label>
-                    <input type="email" name="email" id="email" className='outline-1 outline-gray-500 p-1 rounded-xs w-full font-semibold' onChange={(e) => setEmail(e.target.value)} required />
-                </div>
-
-                <div className='flex flex-col items-start justify-center w-full'>
-                    <label htmlFor="phone" className='text-lg font-semibold cursor-pointer'>Phone Number</label>
-                    <input type="tel" name="phone" id="phone" className='outline-1 outline-gray-500 p-1 rounded-xs w-full font-semibold' onChange={(e) => setPhone(e.target.value)} required />
-                </div>
-
-                <div className='flex flex-col items-start justify-center w-full'>
-                    <label htmlFor="gender" className='text-lg font-semibold cursor-pointer'>Gender</label>
-                    <select name="gender" id="gender" className='outline-1 outline-gray-500 p-1 rounded-xs w-full font-semibold' onChange={(e) => setGender(e.target.value)} required>
-                        <option value="" className='text-gray-500'>Select Gender</option>
-                        <option value="female">Female</option>
-                        <option value="male">Male</option>
-                    </select>
-                </div>
-
-                <div className='flex flex-col items-start justify-center w-full'>
-                    <label htmlFor="password" className='text-lg font-semibold cursor-pointer'>Password</label>
-                    <div className='flex flex-row items-center justify-between outline-1 outline-gray-500 p-1 rounded-xs w-full font-semibold'>
-                        <input type={showing? "text" : "password"} name="password" id="password" className='p-0 outline-none w-full' onChange={(e) => setPassword(e.target.value)} required />
-                        {!showing ? <FaRegEye className='cursor-pointer' title='show password' size='1.4em' onClick={showHide} /> : <FaRegEyeSlash className='cursor-pointer' title='hide password' size='1.4em' onClick={showHide} />}
+            {/* Right side with the form */}
+            <div className='w-full md:w-1/2 flex items-center justify-center bg-gray-50 p-6 sm:p-12'>
+                <form onSubmit={createAccount} className='w-full max-w-md space-y-4'>
+                    <div className='text-center mb-6'>
+                        <h2 className='text-3xl font-bold text-gray-800'>Create Your Account</h2>
+                        <p className='mt-2 text-gray-600'>
+                            Already have an account? <Link to='/' className='font-semibold text-blue-600 hover:underline'>Log in here</Link>.
+                        </p>
                     </div>
-                    <ul className='list-disc list-inside'>
-                        {password.length <= 7 && <li className='text-xs text-red-600 italic'>Password must be more than 7 charracters</li>}
-                        {!num.test(password) && <li className='text-xs text-red-600 italic'>Password must contain a number</li>}
-                        {!letCap.test(password) && <li className='text-xs text-red-600 italic'>Password must contain a capital letter</li>}
-                        {!letSmall.test(password) && <li className='text-xs text-red-600 italic'>Password must contain a small letter</li>}
-                        {!symbol.test(password) && <li className='text-xs text-red-600 italic'>Password must contain any of (!@#%^&*"'"[ ])</li>}
-                        {/[ ]/.test(password) && <li className='text-xs text-red-600 italic'>Password should not contain a space</li>}
-                        {isStrong(password) && <li className='text-xs text-green-700'>Password matches all app standards</li>}
-                    </ul>
-                </div>
 
-                <div className='flex flex-col items-start justify-center w-full'>
-                    <label htmlFor="password2" className='text-lg font-semibold cursor-pointer'>Confirm Password</label>
-                    <div className='flex flex-row items-center justify-between outline-1 outline-gray-500 p-1 rounded-xs w-full font-semibold'>
-                        <input type="password" name="password2" id="password2" className='p-0 outline-none w-full' onChange={(e) => setPasswordConf(e.target.value)} required />
-                        {/* {!showing ? <AiOutlineEye className='cursor-pointer' title='show password' size='1.4em' onClick={showHide} /> : <AiOutlineEyeInvisible className='cursor-pointer' title='hide password' size='1.4em' onClick={showHide} />} */}
+                    <div className='flex flex-col'>
+                        <label htmlFor="fname" className='text-sm font-medium text-gray-700 mb-1'>Full Name</label>
+                        <input type="text" name="fname" id="fname" autoFocus className='w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition' onChange={(e) => setFullname(e.target.value)} required />
                     </div>
-                    <ul className='list-disc list-inside'>
-                        {passwordConf.length !== 0 && password !==passwordConf && <li className='text-xs text-red-600 italic'>Passwords do not match</li>}
-                        {passwordConf.length !== 0 && password ===passwordConf && <li className='text-xs text-green-600 italic'>Passwords match</li>}
-                    </ul>
-                </div>
 
-                {loading? <button className='bg-orange-400 w-full p-2 rounded-md text-white font-semibold text-lg cursor-not-allowed duration-300 animate-pulse'>Creating Account ...</button> : <input type='submit' value="Create Account" className='bg-orange-400 w-full p-2 rounded-md text-white font-semibold text-lg cursor-pointer duration-300 hover:bg-orange-500 active:translate-y-1' />}
-            </form>
+                    <div className='flex flex-col'>
+                        <label htmlFor="email" className='text-sm font-medium text-gray-700 mb-1'>Email Address</label>
+                        <input type="email" name="email" id="email" className='w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition' onChange={(e) => setEmail(e.target.value)} required />
+                    </div>
+
+                    <div className='flex flex-col'>
+                        <label htmlFor="phone" className='text-sm font-medium text-gray-700 mb-1'>Phone Number</label>
+                        <input type="tel" name="phone" id="phone" className='w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition' onChange={(e) => setPhone(e.target.value)} required />
+                    </div>
+
+                    <div className='flex flex-col'>
+                        <label htmlFor="gender" className='text-sm font-medium text-gray-700 mb-1'>Gender</label>
+                        <select name="gender" id="gender" className='w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition' onChange={(e) => setGender(e.target.value)} required>
+                            <option value="">Select Gender</option>
+                            <option value="female">Female</option>
+                            <option value="male">Male</option>
+                        </select>
+                    </div>
+
+                    <div className='flex flex-col'>
+                        <label htmlFor="password" className='text-sm font-medium text-gray-700 mb-1'>Password</label>
+                        <div className='relative flex items-center'>
+                            <input type={showing? "text" : "password"} name="password" id="password" className='w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition' onChange={(e) => setPassword(e.target.value)} required />
+                            <button type="button" onClick={showHide} className="absolute right-3 text-gray-500 hover:text-gray-700">
+                                {!showing ? <FaEye title='show password' size='1.2em' /> : <FaEyeSlash title='hide password' size='1.2em' />}
+                            </button>
+                        </div>
+                        {password && (
+                            <ul className='mt-2 space-y-1'>
+                                <PasswordRequirement met={password.length > 7} text="More than 7 characters" />
+                                <PasswordRequirement met={num.test(password)} text="Contains a number (0-9)" />
+                                <PasswordRequirement met={letCap.test(password)} text="Contains a capital letter (A-Z)" />
+                                <PasswordRequirement met={letSmall.test(password)} text="Contains a small letter (a-z)" />
+                                <PasswordRequirement met={symbol.test(password)} text="Contains a symbol (!@#...)" />
+                                <PasswordRequirement met={!/[ ]/.test(password)} text="Does not contain spaces" />
+                            </ul>
+                        )}
+                    </div>
+
+                    <div className='flex flex-col'>
+                        <label htmlFor="password2" className='text-sm font-medium text-gray-700 mb-1'>Confirm Password</label>
+                        <input type="password" name="password2" id="password2" className='w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition' onChange={(e) => setPasswordConf(e.target.value)} required />
+                        {passwordConf.length > 0 && password !== passwordConf && <p className='text-xs text-red-600 mt-1'>Passwords do not match.</p>}
+                        {passwordConf.length > 0 && password === passwordConf && <p className='text-xs text-green-600 mt-1'>Passwords match.</p>}
+                    </div>
+
+                    <button type="submit" disabled={loading} className='w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 transition-all duration-300 disabled:bg-blue-400 disabled:cursor-not-allowed flex items-center justify-center'>
+                        {loading ? (
+                            <>
+                                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                                <span>Creating Account...</span>
+                            </>
+                        ) : 'Create Account'}
+                    </button>
+                </form>
+            </div>
         </div>
     )
 }
+
+const PasswordRequirement = ({ met, text }) => (
+    <li className={`flex items-center text-xs ${met ? 'text-green-600' : 'text-red-600'}`}>
+        {met ? <FaCheck className="mr-2 flex-shrink-0" /> : <FaTimes className="mr-2 flex-shrink-0" />}
+        <span>{text}</span>
+    </li>
+);
 
 export default SignUp

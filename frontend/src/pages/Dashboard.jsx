@@ -43,7 +43,6 @@ const Dashboard = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("id");
-    alert("Logout successful.");
     navigate("/");
   };
 
@@ -91,7 +90,7 @@ const Dashboard = () => {
             {/* Header Section */}
             <header className="w-full flex items-center justify-between mb-8">
               <h1 className="font-extrabold text-3xl text-gray-800 flex items-center gap-2">
-                <CiStethoscope className="text-blue-600" size="1.2em" /> CDSS
+                <CiStethoscope className="text-blue-600" size="1.2em" /> Clinical Decision Support System (CDSS)
               </h1>
               <MdMenu
                 size="2.5em"
@@ -106,14 +105,14 @@ const Dashboard = () => {
               className="relative w-full h-64 rounded-2xl p-8 flex flex-col justify-center items-start text-white overflow-hidden shadow-lg mb-10"
               style={{ backgroundImage: `url(${patterns})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
             >
-                <div className="absolute inset-0 bg-black/60"></div>
+                <div className="absolute inset-0 bg-black/80"></div>
                 <div className="relative z-10">
                     <h2 className="text-4xl font-bold mb-2">
                         {hour >= 0 && hour < 12 && "Good Morning,"}
                         {hour >= 12 && hour < 18 && "Good Afternoon,"}
                         {hour >= 18 && hour < 24 && "Good Evening,"}
                     </h2>
-                    <p className="text-4xl font-bold text-blue-300 mb-4">{data.fullname}</p>
+                    <p className="text-4xl font-bold text-blue-300 mb-4">Final Year Project - Group Two</p>
                     <p className="max-w-md mb-6">Ready to analyze a new scan? Upload an image to get started.</p>
                     <Link to="/dashboard/upload" className="bg-blue-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-600 transition-all duration-300 transform hover:scale-105 shadow-md">
                         Upload New Scan
@@ -157,7 +156,7 @@ const Dashboard = () => {
           {/* Sidebar (Mobile Overlay) */}
           {sideOpened && (
             <div
-              className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-end"
+              className="fixed inset-0 bg-black bg-opacity-10 z-50 flex justify-end"
               onClick={() => setSideOpened(false)}>
               <div
                 className="bg-white w-72 h-full shadow-lg flex flex-col items-start p-6"
@@ -179,7 +178,7 @@ const Dashboard = () => {
                   <Link onClick={() => setSideOpened(false)} to="/profile" className="flex items-center gap-4 text-lg text-gray-700 font-medium p-3 rounded-lg hover:bg-blue-100 transition-colors">
                     <MdPerson size="1.5em" className="text-blue-500" /> Profile
                   </Link>
-                  <Link onClick={() => setSideOpened(false)} to="/dashboard/description" className="flex items-center gap-4 text-lg text-gray-700 font-medium p-3 rounded-lg hover:bg-blue-100 transition-colors">
+                  <Link onClick={() => setSideOpened(false)} to="/description" className="flex items-center gap-4 text-lg text-gray-700 font-medium p-3 rounded-lg hover:bg-blue-100 transition-colors">
                     <BsInfoCircle size="1.5em" className="text-blue-500" /> App Description
                   </Link>
                 </div>
