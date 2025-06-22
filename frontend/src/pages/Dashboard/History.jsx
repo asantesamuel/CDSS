@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+
 import { Link, useNavigate } from "react-router-dom";
 import { BiCaretLeft } from "react-icons/bi";
 import { FaBrain, FaCalendarAlt, FaFileMedicalAlt } from "react-icons/fa";
@@ -37,7 +37,7 @@ const dummyHistory = [
 
 const History = () => {
   // Using dummy data instead of fetching from an API
-  const [history, setHistory] = useState(dummyHistory);
+//   const [history, setHistory] = useState(dummyHistory);
   const navigate = useNavigate();
 
   return (

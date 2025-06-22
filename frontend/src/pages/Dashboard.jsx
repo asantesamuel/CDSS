@@ -39,7 +39,7 @@ const Dashboard = () => {
         }
         setLoading(false);
       });
-  }, []);
+  }, [id]);
 
   const handleLogout = () => {
     localStorage.removeItem("id");

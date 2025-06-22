@@ -27,7 +27,7 @@ const SignUp = () => {
     const num = /[0-9]/;
     const letCap = /[A-Z]/;
     const letSmall = /[a-z]/;
-    const symbol = /[!@#%^&*"'"\[\]]/;
+    const symbol = /[!@#%^&*"'"[\]]/;
 
     // Function to confirm password's strength
     const isStrong = (pwd) => {
