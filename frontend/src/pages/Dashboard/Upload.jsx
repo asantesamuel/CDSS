@@ -2,6 +2,9 @@ import axios from "axios";
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { BiCaretLeft, BiCloudUpload, BiImage, BiTrash } from "react-icons/bi";
+import Profile from "../Profile";
+
+import Footer from "../Footer";
 
 const ALLOWED_EXTENSIONS = ["jpg", "png", "jpeg"];
 
@@ -118,13 +121,14 @@ const Upload = () => {
   };
 
   return (
-    <div className="min-h-screen bg-blue-50 flex flex-col items-center justify-start p-4">
-      <div className="w-full max-w-3xl">
-        <BiCaretLeft
+    <div className="min-h-screen flex flex-col items-center justify-start p-4">
+      <Profile />
+      <div className="w-full max-w-3xl m-10 bg-white/80 backdrop-blur-sm rounded-xl shadow-xl p-6 md:p-8">
+        {/* <BiCaretLeft
           onClick={() => navigate(-1)}
           size="3em"
           className="cursor-pointer duration-300 hover:text-gray-500 mb-4"
-        />
+        /> */}
 
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-800">Upload CCT Scan</h1>
@@ -225,6 +229,8 @@ const Upload = () => {
         </div>
         {error && <p className="text-red-500 text-center mt-4">{error}</p>}
       </div>
+    
+    <Footer />
     </div>
   );
 };

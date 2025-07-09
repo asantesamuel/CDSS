@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { BsImage, BsInfoCircle } from "react-icons/bs";
 import { MdClose, MdError, MdHistory, MdMenu, MdPerson } from "react-icons/md";
 import { CiLogout, CiStethoscope } from "react-icons/ci";
@@ -6,6 +6,8 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Loader from "../components/loader";
 import patterns from "../assets/1311314_414.jpg";
+import Description from "./Description";
+import Footer from "./Footer";
 
 const Dashboard = () => {
   const date = new Date();
@@ -90,7 +92,8 @@ const Dashboard = () => {
             {/* Header Section */}
             <header className="w-full flex items-center justify-between mb-8">
               <h1 className="font-extrabold text-3xl text-gray-800 flex items-center gap-2">
-                <CiStethoscope className="text-blue-600" size="1.2em" /> Clinical Decision Support System (CDSS)
+                <CiStethoscope className="text-blue-600" size="1.2em" />{" "}
+                Clinical Decision Support System (CDSS)
               </h1>
               <MdMenu
                 size="2.5em"
@@ -103,25 +106,38 @@ const Dashboard = () => {
             {/* Hero Section */}
             <section
               className="relative w-full h-64 rounded-2xl p-8 flex flex-col justify-center items-start text-white overflow-hidden shadow-lg mb-10"
-              style={{ backgroundImage: `url(${patterns})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
-            >
-                <div className="absolute inset-0 bg-black/80"></div>
-                <div className="relative z-10">
-                    <h2 className="text-4xl font-bold mb-2">
-                        {hour >= 0 && hour < 12 && "Good Morning,"}
-                        {hour >= 12 && hour < 18 && "Good Afternoon,"}
-                        {hour >= 18 && hour < 24 && "Good Evening,"}
-                    </h2>
-                    <p className="text-4xl font-bold text-blue-300 mb-4">Final Year Project - Group Two</p>
-                    <p className="max-w-md mb-6">Ready to analyze a new scan? Upload an image to get started.</p>
-                    <Link to="/dashboard/upload" className="bg-blue-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-600 transition-all duration-300 transform hover:scale-105 shadow-md">
-                        Upload New Scan
-                    </Link>
-                </div>
+              style={{
+                backgroundImage: `url(${patterns})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}>
+              <div className="absolute inset-0 bg-black/80"></div>
+              <div className="relative z-10">
+                <h2 className="text-4xl font-bold mb-2">
+                  {hour >= 0 && hour < 12 && "Good Morning,"}
+                  {hour >= 12 && hour < 18 && "Good Afternoon,"}
+                  {hour >= 18 && hour < 24 && "Good Evening,"}
+                </h2>
+                <p className="text-4xl font-bold text-blue-300 mb-4">
+                  Final Year Project - Group Two
+                </p>
+                <p className="max-w-md mb-6">
+                  Ready to analyze a new scan? Upload an image to get started.
+                </p>
+                <Link
+                  to="/dashboard/upload"
+                  className="bg-blue-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-600 transition-all duration-300 transform hover:scale-105 shadow-md">
+                  Upload New Scan
+                </Link>
+              </div>
             </section>
+            <div>
+              {/* About the app */}
+              <Description />
+            </div>
 
             {/* Dashboard cards */}
-            <main className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
+            <main className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 w-2/3 items-center justify-center mx-auto">
               <DashboardCard
                 title="Upload Image"
                 description="Analyze a new CCT scan"
@@ -136,20 +152,20 @@ const Dashboard = () => {
                 link="/dashboard/history"
                 bgColor="from-green-500 to-green-400"
               />
-              <DashboardCard
+              {/* <DashboardCard
                 title="Your Profile"
                 description="Manage personal info"
                 icon={<MdPerson size="2em" />}
                 link="/profile"
                 bgColor="from-purple-500 to-purple-400"
-              />
-              <DashboardCard
+              /> */}
+              {/* <DashboardCard
                 title="About CDSS"
                 description="Learn about the app"
                 icon={<BsInfoCircle size="2em" />}
                 link="/dashboard/description"
                 bgColor="from-orange-500 to-orange-400"
-              />
+              /> */}
             </main>
           </div>
 
@@ -169,17 +185,31 @@ const Dashboard = () => {
 
                 {/* Menu Items */}
                 <div className="w-full flex flex-col gap-4">
-                  <Link onClick={() => setSideOpened(false)} to="/dashboard/upload" className="flex items-center gap-4 text-lg text-gray-700 font-medium p-3 rounded-lg hover:bg-blue-100 transition-colors">
-                    <BsImage size="1.5em" className="text-blue-500" /> Upload Image
+                  <Link
+                    onClick={() => setSideOpened(false)}
+                    to="/dashboard/upload"
+                    className="flex items-center gap-4 text-lg text-gray-700 font-medium p-3 rounded-lg hover:bg-blue-100 transition-colors">
+                    <BsImage size="1.5em" className="text-blue-500" /> Upload
+                    Image
                   </Link>
-                  <Link onClick={() => setSideOpened(false)} to="/dashboard/history" className="flex items-center gap-4 text-lg text-gray-700 font-medium p-3 rounded-lg hover:bg-blue-100 transition-colors">
+                  <Link
+                    onClick={() => setSideOpened(false)}
+                    to="/dashboard/history"
+                    className="flex items-center gap-4 text-lg text-gray-700 font-medium p-3 rounded-lg hover:bg-blue-100 transition-colors">
                     <MdHistory size="1.5em" className="text-blue-500" /> History
                   </Link>
-                  <Link onClick={() => setSideOpened(false)} to="/profile" className="flex items-center gap-4 text-lg text-gray-700 font-medium p-3 rounded-lg hover:bg-blue-100 transition-colors">
+                  <Link
+                    onClick={() => setSideOpened(false)}
+                    to="/profile"
+                    className="flex items-center gap-4 text-lg text-gray-700 font-medium p-3 rounded-lg hover:bg-blue-100 transition-colors">
                     <MdPerson size="1.5em" className="text-blue-500" /> Profile
                   </Link>
-                  <Link onClick={() => setSideOpened(false)} to="/description" className="flex items-center gap-4 text-lg text-gray-700 font-medium p-3 rounded-lg hover:bg-blue-100 transition-colors">
-                    <BsInfoCircle size="1.5em" className="text-blue-500" /> App Description
+                  <Link
+                    onClick={() => setSideOpened(false)}
+                    to="/description"
+                    className="flex items-center gap-4 text-lg text-gray-700 font-medium p-3 rounded-lg hover:bg-blue-100 transition-colors">
+                    <BsInfoCircle size="1.5em" className="text-blue-500" /> App
+                    Description
                   </Link>
                 </div>
 
@@ -193,6 +223,10 @@ const Dashboard = () => {
           )}
         </div>
       )}
+
+      <div>
+        <Footer />
+      </div>
     </div>
   );
 };

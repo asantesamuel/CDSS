@@ -7,6 +7,7 @@ import {
     FaHeartbeat, FaLungs, FaTint
 } from 'react-icons/fa';
 
+
 // Dummy user data for UI demonstration
 const dummyUser = {
     fullname: 'John Doe',
@@ -36,7 +37,7 @@ const Profile = () => {
 
     const [user, setUser] = useState(dummyUser);
     const [formData, setFormData] = useState(dummyUser);
-    const [isEditing, setIsEditing] = useState(false);
+    const [isEditing, setIsEditing] = useState(true);
 
     // No useEffect for fetching data, as we're using dummy data
     // No loading, error, or saving states as per the request for UI only
@@ -75,8 +76,8 @@ const Profile = () => {
     // Removed loading and error UI conditions as per the request for UI only
 
     return (
-        <div className='min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col items-center justify-start p-4 md:p-6'>
-            <div className="w-full max-w-4xl">
+        <div className='min-h-screen flex flex-col items-center justify-start p-4 md:p-6 w-full'>
+            <div className="w-full max-w-5xl">
                 <BiCaretLeft onClick={() => navigate(-1)} size='3em' className='cursor-pointer duration-300 hover:text-gray-500 mb-4' />
 
                 <div className='bg-white/80 backdrop-blur-sm rounded-xl shadow-xl p-6 md:p-8'>
@@ -168,6 +169,7 @@ const Profile = () => {
                     </form>
                 </div>
             </div>
+        
         </div>
     )
 }
