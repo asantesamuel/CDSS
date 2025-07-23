@@ -279,31 +279,38 @@ userRouter.put('/patient/edit/:id', async (req, res) => {
     }
 })
 
-userRouter.put('/send-otp/:id', async (req, res) => {
+userRouter.put('/send-otp', async (req, res) => {
     try {
-        const { id } = req.params;
-
-        const user = await userModel.findById(id);
+        const { email } = req.body;
+        const user = await userModel.findOne({ email });
         if(!user) {
             return res.status(404).send({
-                message: "User data cannot be found.",
+                message: "User data cannot be found. Please make sure to enter a valid email address",
                 code: 404,
                 status: "error"
+            })
+        }
+        if(user.otp) {
+            return res.status(200).send({
+                message: "OTP was sent to your gmail. Kindly check your gmail to access it.",
+                status: "success",
+                user
             })
         }
 
         const OTP = Math.round(Math.random()*99999);
 
-        const mail_sent = await SendOTP(user.email, OTP);
+        const mail_sent = await SendOTP(email, OTP);
 
         const data = {
             otp: OTP
         }
 
-        const saved = await userModel.findByIdAndUpdate(id, data);
+        const saved = await userModel.findByIdAndUpdate(user._id, data);
 
-        return res.status(200).send({
+        return res.status(200).json({
             message: "OTP sent successfully. Kindly check your email to access it.",
+            user: saved,
             status: "success",
             code: 200
         })
@@ -388,6 +395,20 @@ userRouter.put('/change-password/:id', async (req, res) => {
             password2, // Repeat password
         } = req.body;
 
+        const check_password = (password) => {
+            if(/[0-9]/.test(password) && /[A-Z]/.test(password) && /[a-z]/.test(password) && password.length >= 8) {
+                return true;
+            }
+            return false;
+        }
+
+        if(!check_password(password)) {
+            return res.status(400).send({
+                message: "Make sure password meets all requirements",
+                status: "error"
+            })
+        }
+
         if(!password || !password2) {
             return res.status(400).send({
                 message: "Kindly fill in all fields to reset your password",
@@ -401,9 +422,9 @@ userRouter.put('/change-password/:id', async (req, res) => {
         }
 
         const salt = await bcrypt.genSalt(10);
+
         const data = {
-            password: await bcrypt.hash(password, salt),
-            verified: false
+            password: await bcrypt.hash(password, salt)
         }
 
         const updated = await userModel.findByIdAndUpdate(id, data);
@@ -415,8 +436,8 @@ userRouter.put('/change-password/:id', async (req, res) => {
         }
 
         return res.status(200).send({
-            message: "Password changed successfully.",
-            status: "error"
+            message: "Password changed successfully. You can now proceed to login.",
+            status: "success"
         })
     } catch (error) {
         return res.status(500).send({
