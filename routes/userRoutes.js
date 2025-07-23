@@ -2,6 +2,7 @@ import express from 'express';
 import bcrypt from 'bcrypt';
 import { userModel } from '../models/userModel.js';
 import { patientModel } from '../models/patientModel.js';
+import { SendOTP } from '../config/SendMail.js';
 
 const userRouter = express.Router();
 
@@ -275,6 +276,153 @@ userRouter.put('/patient/edit/:id', async (req, res) => {
         return res.status(200).json(updatedUser);
     } catch (error) {
         return res.status(500).send("Something went wrong. Kindly try again later");
+    }
+})
+
+userRouter.put('/send-otp/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const user = await userModel.findById(id);
+        if(!user) {
+            return res.status(404).send({
+                message: "User data cannot be found.",
+                code: 404,
+                status: "error"
+            })
+        }
+
+        const OTP = Math.round(Math.random()*99999);
+
+        const mail_sent = await SendOTP(user.email, OTP);
+
+        const data = {
+            otp: OTP
+        }
+
+        const saved = await userModel.findByIdAndUpdate(id, data);
+
+        return res.status(200).send({
+            message: "OTP sent successfully. Kindly check your email to access it.",
+            status: "success",
+            code: 200
+        })
+        
+    } catch (error) {
+        return res.status(500).send({
+            message: "Something went wrong. Kindly try again later.",
+            status: "error"
+        })
+    }
+})
+
+userRouter.put('/verify-otp/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { OTP } = req.body;
+
+        if(!OTP) {
+            return res.status(400).send({
+                message: "Kindly enter OTP to reset your password.",
+                status: "error"
+            })
+        }
+        if(OTP.toString().length !== 5) {
+            return res.status(400).send({
+                message: "Incorrect OTP length.",
+                status: "error"
+            })
+        }
+
+        const user = await userModel.findById(id);
+
+        if(!user) {
+            return res.status(404).send({
+                message: "User info not found. Make sure you're logged in.",
+                status: "error"
+            })
+        }
+
+        if(user.otp !== OTP) {
+            return res.status(400).send({
+                message: "The OTP you entered is incorrect.",
+                status: "error"
+            })
+        }
+
+        const data = {
+            otp: '',
+            verified: true
+        }
+
+        const updated = await userModel.findByIdAndUpdate(id, data);
+
+        return res.status(200).send({
+            message: "Kindly proceed to change your password",
+            status: "error"
+        })
+
+    } catch (error) {
+        return res.status(500).send({
+            message: "Something went wrong. Kindly try again later.",
+            status: "error"
+        })
+    }
+})
+
+userRouter.put('/change-password/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const user = await userModel.findById(id);
+
+        if(!user.verified) {
+            return res.status(401).send({
+                message: "Kindly go back to enter OTP to reset your password",
+                status: "error"
+            })
+        }
+
+        const {
+            password,
+            password2, // Repeat password
+        } = req.body;
+
+        if(!password || !password2) {
+            return res.status(400).send({
+                message: "Kindly fill in all fields to reset your password",
+                status: "error"
+            })
+        }else if(password !== password2) {
+            return res.status(400).send({
+                message: "Kindly make sure your passwords match",
+                status: "error"
+            })
+        }
+
+        const salt = await bcrypt.genSalt(10);
+        const data = {
+            password: await bcrypt.hash(password, salt),
+            verified: false
+        }
+
+        const updated = await userModel.findByIdAndUpdate(id, data);
+        if(!updated) {
+            return res.status(204).send({
+                message: "Password could not be changed. Kindly try again later.",
+                status: "error"
+            })
+        }
+
+        return res.status(200).send({
+            message: "Password changed successfully.",
+            status: "error"
+        })
+    } catch (error) {
+        return res.status(500).send({
+            message: "Something went wrong. Kindly try again later.",
+            status: "error"
+        })
     }
 })
 

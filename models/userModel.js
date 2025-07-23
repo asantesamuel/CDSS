@@ -23,6 +23,13 @@ const userSchema = mongoose.Schema({
     password: {
         type: String,
         required: true
+    },
+    otp: {
+        type: String,
+    },
+    verified: {
+        type: Boolean,
+        default: false
     }
 },
 {
