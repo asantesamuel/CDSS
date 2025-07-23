@@ -10,6 +10,8 @@ import Description from './pages/Description'
 import Profile from './pages/Profile'
 import ForgotPassword from './pages/ForgotPassword'
 import PatientProfile from './pages/PatientProfile'
+import VerifyOTP from './pages/VerifyOTP'
+import ChangePassword from './pages/ChangePassword'
 
 const Navigation = () => {
     return (
@@ -25,6 +27,8 @@ const Navigation = () => {
           <Route path="/signup" Component={SignUp} />
           <Route path="/profile" Component={Profile} />
           <Route path="/reset-password" Component={ForgotPassword} />
+          <Route path="/change-password" Component={ChangePassword} />
+          <Route path="/verify-otp" Component={VerifyOTP} />
         </Routes>
       </BrowserRouter>
     );

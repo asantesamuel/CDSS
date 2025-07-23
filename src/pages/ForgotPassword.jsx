@@ -21,23 +21,22 @@ const SignIn = () => {
 
     setLoading(true);
     axios
-      .post("http://localhost:5555/user/login", data)
-      .then((res) => {
-        localStorage.setItem("id", res.data._id);
-        setLoading(false);
-        navigate("/dashboard");
-      })
-      .catch((err) => {
-        if (err.response) {
-          alert(`${err.response.data}`);
-        } else {
-          alert(
-            "Something went wrong, kindly check your connection and try again"
-          );
-        }
+        .put("http://localhost:5555/user/send-otp", data)
+        .then((res) => {
+            alert(res.data.message);
+            localStorage.setItem("user_id", JSON.stringify(res.data.user));
+            setLoading(false);
+            navigate("/verify-otp");
+        })
+        .catch((err) => {
+            if (err.response) {
+                alert(err.response.data.message);
+            } else {
+                alert("Something went wrong, kindly check your connection and try again");
+            }
 
-        setLoading(false);
-      });
+            setLoading(false);
+        });
   };
 
   return (
