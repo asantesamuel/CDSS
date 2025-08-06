@@ -3,6 +3,20 @@ import bcrypt from 'bcrypt';
 import { userModel } from '../models/userModel.js';
 import { patientModel } from '../models/patientModel.js';
 import { SendOTP } from '../config/SendMail.js';
+import multer from 'multer';
+import path from 'path';
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/')
+    },
+    filename: function (req, file, cb) {
+        const extension = path.extname(file.originalname);
+        cb(null, file.fieldname + '-' + Date.now() + extension)
+    }
+});
+
+const upload = multer({ storage: storage });
 
 const userRouter = express.Router();
 
@@ -123,19 +137,28 @@ userRouter.put('/update/:id', async (req, res) => {
 })
 
 // Add to history
-/* userRouter.put('/add-to-history/:id', async (req, res) => {
+userRouter.put('/add-to-history/:id', upload.single("image"), async (req, res) => {
     try {
         const { id } = req.params;
-        const { history } = req.body;
 
-        const data = {
-            scan_history: history
+        const image = req.file? req.file.filename : undefined;
+
+        const {
+            confidence,
+            inference
+        } = req.body;
+
+        const scan_history = {
+            inference,
+            confidence,
+            image
         }
 
-        const added = patientModel.findByIdAndUpdate(id, { $push: { history: data } }, { new: true, upsert: true } );
+        const added = await patientModel.findByIdAndUpdate(id, { $push: { scan_history: scan_history } }, { new: true } );
 
         return res.status(201).send("Scan successfully added to history");
     } catch (error) {
+        console.log(error)
         if(error.name === "MongoNetworkError" || error.name === "MongoServerSelectionError") {
             return res.status(503).send({
                 message: "Something went wrong. Kindly check your internet and try again.",
@@ -148,7 +171,7 @@ userRouter.put('/update/:id', async (req, res) => {
             name: "unknown"
         });
     }
-}) */
+})
 
 // Add patient
 userRouter.post('/patient/add', async (req, res) => {
@@ -424,7 +447,8 @@ userRouter.put('/change-password/:id', async (req, res) => {
         const salt = await bcrypt.genSalt(10);
 
         const data = {
-            password: await bcrypt.hash(password, salt)
+            password: await bcrypt.hash(password, salt),
+            verified: false
         }
 
         const updated = await userModel.findByIdAndUpdate(id, data);

@@ -53,9 +53,14 @@ const patientSchema = mongoose.Schema({
     },
     scan_history: [
         {
+            id: mongoose.Schema.Types.ObjectId,
             image: String,
             confidence: String,
-            inference: String
+            inference: String,
+            date: {
+                type: Date,
+                default: Date.now()
+            }
         }
     ]
 })
