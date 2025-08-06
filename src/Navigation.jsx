@@ -5,13 +5,14 @@ import NotFound from './pages/NotFound'
 import SignUp from './pages/SignUp'
 import Dashboard from './pages/Dashboard'
 import History from './pages/Dashboard/History'
-import Upload from './pages/Dashboard/Upload'
 import Description from './pages/Description'
 import Profile from './pages/Profile'
 import ForgotPassword from './pages/ForgotPassword'
 import PatientProfile from './pages/PatientProfile'
 import VerifyOTP from './pages/VerifyOTP'
 import ChangePassword from './pages/ChangePassword'
+import HistoryDetails from './pages/Dashboard/HistoryDetails'
+import PatientData from './pages/PatientData'
 
 const Navigation = () => {
     return (
@@ -22,7 +23,8 @@ const Navigation = () => {
           <Route path="/dashboard" Component={Dashboard} />
           <Route path="/dashboard/description" Component={Description} />
           <Route path="/dashboard/history" Component={History} />
-          <Route path="/dashboard/upload" Component={Upload} />
+          <Route path="/dashboard/history/:id" Component={HistoryDetails} />
+          <Route path="/dashboard/patient/add" Component={PatientData} />
           <Route path="/dashboard/patient/:id" Component={PatientProfile} />
           <Route path="/signup" Component={SignUp} />
           <Route path="/profile" Component={Profile} />

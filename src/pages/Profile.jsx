@@ -164,8 +164,9 @@ const Profile = () => {
 
                         <div className='mt-5' id='patients'>
                             <h2 className="text-xl font-bold text-gray-700 mb-4">List of Patients</h2>
+                            <p className='text-gray-500 pb-4 px-4'>Click on a patient below to upload his/her CCT scan.</p>
                             {loading3 && <Loader>Loading Patients...</Loader>}
-                            {patients && patients.length > 0 && (
+                            {!loading3 && patients && patients.length > 0 && (
                                 <>
                                     {patients.map((patient, i) => {
                                         return (
@@ -179,7 +180,7 @@ const Profile = () => {
                                     })}
                                 </>
                             )}
-                            {patients && patients.length < 1 && <p>No patients added yet</p>}
+                            {!loading3 && patients && patients.length < 1 && <p>No patients added yet</p>}
                         </div>
                     </div>
                 </div>
