@@ -122,12 +122,12 @@ const Dashboard = () => {
                   Final Year Project - Group Two
                 </p>
                 <p className="max-w-md mb-6">
-                  Ready to analyze a new scan? Upload an image to get started.
+                  Ready to analyze a new scan? Add a new patient to get started.
                 </p>
                 <Link
-                  to="/dashboard/upload"
+                  to="/dashboard/patient/add"
                   className="bg-blue-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-600 transition-all duration-300 transform hover:scale-105 shadow-md">
-                  Upload New Scan
+                  Add New Patient
                 </Link>
               </div>
             </section>
@@ -139,10 +139,10 @@ const Dashboard = () => {
             {/* Dashboard cards */}
             <main className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 w-2/3 items-center justify-center mx-auto">
               <DashboardCard
-                title="Upload Image"
-                description="Analyze a new CCT scan"
+                title="Add Patient"
+                description="Add a new patient profile"
                 icon={<BsImage size="2em" />}
-                link="/dashboard/upload"
+                link="/dashboard/patient/add"
                 bgColor="from-blue-500 to-blue-400"
               />
               <DashboardCard

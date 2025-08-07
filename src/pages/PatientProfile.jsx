@@ -1,26 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { BiCloudUpload, BiImage, BiTrash } from 'react-icons/bi';
-import { useNavigate, useParams } from 'react-router-dom'
 import Footer from './Footer';
 import axios from 'axios';
 import ExistingPatientData from './ExistingPatientData';
+import { useParams } from 'react-router-dom';
+
+const ALLOWED_EXTENSIONS = ["jpg", "png", "jpeg"];
 
 const PatientProfile = () => {
-
-    const { id } = useParams();
-
-    const dummyResults = {
-        result: "Positive",
-        severity: "High",
-        affectedArea: "Left Hemisphere",
-    };
-
-    const doctor_id = localStorage.getItem("id");
-    const navigate = useNavigate();
 
     const [selectedFile, setSelectedFile] = useState(null);
     const [previewUrl, setPreviewUrl] = useState(null);
     const [isDragging, setIsDragging] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const [results, setResults] = useState(null); // To store scan results
 
@@ -28,7 +20,7 @@ const PatientProfile = () => {
 
     // Clean up the object URL to avoid memory leaks
 
-    
+    const { id } = useParams();
 
     useEffect(() => {
         if (selectedFile) {
@@ -83,6 +75,61 @@ const PatientProfile = () => {
             inputRef.current.value = "";
         }
   };
+
+  const addToHistory = (res) => {
+
+        const data = new FormData();
+        data.append("inference", res.result);
+        data.append("confidence", res.confidence);
+        data.append("image", selectedFile);
+        axios
+            .put(`http://localhost:5555/user/add-to-history/${id}`, data) // Send results along
+            .then((res) => {
+                alert(res.data);
+            })
+            .catch((err) => {
+                if (err.response) {
+                    alert(err.response.data.message);
+                } else {
+                    alert("Couldn't add scan to history. Kindly try again later.");
+                }
+                setLoading(false);
+            });
+    };
+
+    const handleUpload = (e) => {
+        e.preventDefault();
+
+        if (!selectedFile) {
+            alert("Please select a file first.");
+            return;
+        }
+
+        setLoading(true);
+
+        const data1 = new FormData();
+        data1.append("file", selectedFile);
+
+        axios
+            .post('http://127.0.0.1:5000/predict', data1)
+            .then(res => {
+                const predicted = {
+                    result: res.data.predicted_class === "Ischemia" ? "Positive" : "Negative",
+                    confidence: `${parseFloat(res.data.confidence * 100).toFixed(2)}%`
+                }
+                setResults(predicted);
+                addToHistory(predicted);
+                setLoading(false);
+            })
+            .catch(err => {
+                if(err.response) {
+                    alert(err.response.data.message);
+                }else {
+                    alert("Something went wrong. Kindly try again later.");
+                }
+                setLoading(false);
+            })
+    };
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-start p-4">
@@ -165,11 +212,20 @@ const PatientProfile = () => {
                             className="flex items-center gap-2 bg-red-500 text-white font-bold py-2 px-4 rounded-md hover:bg-red-600 transition-colors">
                             <BiTrash /> Remove
                         </button>
-                        <button
-                            onClick={handleUpload}
-                            className="bg-green-500 text-white font-bold py-2 px-6 rounded-md hover:bg-green-600 transition-colors">
-                            Upload & Analyze
-                        </button>
+                        {!loading && 
+                            <button
+                                onClick={handleUpload}
+                                className="bg-green-500 text-white font-bold py-2 px-6 rounded-md hover:bg-green-600 transition-colors">
+                                Upload & Analyze
+                            </button>
+                        }
+                        {loading && 
+                            <button
+                                type="button"
+                                className="animate-pulse cursor-not-allowed bg-green-500 text-white font-bold py-2 px-6 rounded-md hover:bg-green-600 transition-colors">
+                                Analyzing...
+                            </button>
+                        }
                     </div>
                 </div>
             )}
@@ -179,10 +235,10 @@ const PatientProfile = () => {
                     <h2 className="text-2xl font-bold text-gray-800 mb-5 text-center">
                         Analysis Results
                     </h2>
-                    <div className="space-y-4">
+                <div className="space-y-4">
                         <ResultItem label="Result" value={results.result} />
-                        <ResultItem label="Severity" value={results.severity} />
-                        <ResultItem label="Affected Area" value={results.affectedArea} />
+                        <ResultItem label="Confidence" value={results.confidence} />
+                        {/* <ResultItem label="Affected Area" value={results.affectedArea} /> */}
 
                         {/* Placeholder for your brain visualization */}
                         <div className="bg-gray-100 p-5 rounded-lg text-center">
