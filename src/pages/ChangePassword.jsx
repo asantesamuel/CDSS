@@ -25,6 +25,7 @@ const ChangePassword = () => {
             .put(`http://localhost:5555/user/change-password/${user._id}`, { password, password2 })
             .then(res => {
                 alert(res.data.message);
+                localStorage.removeItem("user_id");
                 navigate("/");
                 setLoading(false);
             })

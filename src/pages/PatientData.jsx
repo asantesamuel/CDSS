@@ -57,8 +57,8 @@ const PatientData = () => {
         axios
             .post('http://localhost:5555/user/patient/add', formData)
             .then(res => {
-                setUser(res.data);
-                setIsEditing(false);
+                alert("Patient added. Kindly proceed to upload CCT scan.");
+                navigate(`/dashboard/patient/${res.data._id}`);
                 setLoading(false);
             })
             .catch(err => {

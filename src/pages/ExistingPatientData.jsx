@@ -178,8 +178,3 @@ const ExistingPatientData = () => {
 }
 
 export default ExistingPatientData
-
-
-// New helper component for dropdowns/selects
-
-
