@@ -142,13 +142,15 @@ const ExistingPatientData = () => {
 
                             {isEditing && (
                                 <div className='flex justify-end gap-4 pt-6 border-t mt-4'>
-                                    <button
-                                        type='button'
-                                        onClick={handleCancelEdit}
-                                        className='flex items-center gap-2 bg-gray-500 text-white font-bold py-2 px-4 rounded-md hover:bg-gray-600 transition-colors'
-                                    >
-                                        <MdClose /> Cancel
-                                    </button>
+                                    {!loading && (
+                                        <button
+                                            type='button'
+                                            onClick={handleCancelEdit}
+                                            className='flex items-center gap-2 bg-gray-500 text-white font-bold py-2 px-4 rounded-md hover:bg-gray-600 transition-colors'
+                                        >
+                                            <MdClose /> Cancel
+                                        </button>
+                                    )}
                                     <button
                                         type='submit'
                                         className={`flex items-center gap-2 bg-green-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-green-600 transition-all duration-300 transform hover:scale-105 shadow-md ${loading && 'animate-pulse'}`}

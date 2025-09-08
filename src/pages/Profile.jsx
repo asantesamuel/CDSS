@@ -7,6 +7,7 @@ import { MdClose } from 'react-icons/md';
 import { useState, useEffect } from 'react';
 import axios from 'axios'
 import Loader from '../components/Loader';
+import ErrorComponent from '../components/Profile/ErrorComponent';
 
 const Profile = () => {
     const navigate = useNavigate();
@@ -19,6 +20,7 @@ const Profile = () => {
     const [loading, setLoading] = useState(false);
     const [loading2, setLoading2] = useState(false);
     const [loading3, setLoading3] = useState(false);
+    const [err, setErr] = useState(false);
 
     const id = localStorage.getItem("id");
 
@@ -32,6 +34,7 @@ const Profile = () => {
                 setUser(res.data);
                 setLoading(false);
                 setLoading3(true);
+                setErr(false);
 
                 axios
                     .get(`http://localhost:5555/user/patients/${id}`)
@@ -51,7 +54,7 @@ const Profile = () => {
                     alert("Something went wrong. Kindly try again later.");
                 }
                 setLoading(false);
-                console.log(err)
+                setErr(true);
             })
     }, [])
 
@@ -97,15 +100,20 @@ const Profile = () => {
                 .catch(err => {
                     alert("Action could not be completed. Kindly try again later.");
                 })
-        }else {
+        }/* else {
             alert("Nope")
-        }
+        } */
     }
 
     return (
         <div className='min-h-screen flex flex-col items-center justify-start p-4 md:p-6 w-full'>
             {loading && <Loader />}
-            {!loading && user && (
+            {!loading && err && (
+                <ErrorComponent>
+                    <p className='text-center'>Something went wrong. Kindly reload to try again or login if you are not.</p>
+                </ErrorComponent>
+            )}
+            {!loading && !err && user && (
                 <div className="w-full max-w-5xl">
                     <BiCaretLeft onClick={() => navigate(-1)} size='3em' className='cursor-pointer duration-300 hover:text-gray-500 mb-4' />
 
