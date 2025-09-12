@@ -1,2 +1,5 @@
 dicom_classifier_best_20250728_140953.h5
 myvenv
+final_stroke_segmentation_model2.pth
+best_segmentation_model.pth
+*/__pycache__/*
