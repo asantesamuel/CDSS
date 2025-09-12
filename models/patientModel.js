@@ -32,7 +32,7 @@ const patientSchema = mongoose.Schema({
         required: true
     },
     medical_history: {
-        dibetes: {
+        diabetes: {
             type: Boolean,
             required: true,
             enum: [true, false],

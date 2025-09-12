@@ -259,7 +259,7 @@ userRouter.delete('/patient/delete/:id', async (req, res) => {
 
         const deleted = await patientModel.findByIdAndDelete(id);
 
-        return res.status(200).send("Patient data deleted successfully");
+        return res.status(200).send("Patient data deleted successfully.");
     } catch (error) {
         return res.status(500).send("Something went wrong. Kindly try again later");
     }
@@ -293,12 +293,12 @@ userRouter.put('/patient/edit/:id', async (req, res) => {
         const updatedUser = await patientModel.findByIdAndUpdate(id, data);
 
         if(!updatedUser) {
-            return res.status(204).send("Data couldn't be updated");
+            return res.status(204).send("Data couldn't be updated. Kindly try again later.");
         }
 
         return res.status(200).json(updatedUser);
     } catch (error) {
-        return res.status(500).send("Something went wrong. Kindly try again later");
+        return res.status(500).send("Something went wrong. Kindly try again later.");
     }
 })
 
