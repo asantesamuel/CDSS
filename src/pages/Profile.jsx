@@ -94,7 +94,7 @@ const Profile = () => {
             axios
                 .delete(`http://localhost:5555/user/patient/delete/${id}`)
                 .then(res => {
-                    alert("Action successful.")
+                    alert("Patient data deleted successfully.")
                     location.reload();
                 })
                 .catch(err => {
@@ -172,10 +172,11 @@ const Profile = () => {
 
                         <div className='mt-5' id='patients'>
                             <h2 className="text-xl font-bold text-gray-700 mb-4">List of Patients</h2>
-                            <p className='text-gray-500 pb-4 px-4'>Click on a patient below to upload his/her CCT scan.</p>
+                            
                             {loading3 && <Loader>Loading Patients...</Loader>}
                             {!loading3 && patients && patients.length > 0 && (
                                 <>
+                                    <p className='text-gray-500 pb-4 px-4'>Click on a patient below to upload his/her CCT scan.</p>
                                     {patients.map((patient, i) => {
                                         return (
                                             <div key={patient._id} className='rounded shadow-md shadow-gray-300 m-1 flex flex-row justify-between items-center'>

@@ -169,6 +169,11 @@ const Dashboard = () => {
             </main>
           </div>
 
+            {/* Footer */}
+          <div>
+            <Footer />
+        </div>
+
           {/* Sidebar (Mobile Overlay) */}
           {sideOpened && (
             <div
@@ -206,7 +211,7 @@ const Dashboard = () => {
                   </Link>
                   <Link
                     onClick={() => setSideOpened(false)}
-                    to="/description"
+                    to="/dashboard/description"
                     className="flex items-center gap-4 text-lg text-gray-700 font-medium p-3 rounded-lg hover:bg-blue-100 transition-colors">
                     <BsInfoCircle size="1.5em" className="text-blue-500" /> App
                     Description
@@ -224,9 +229,7 @@ const Dashboard = () => {
         </div>
       )}
 
-      <div>
-        <Footer />
-      </div>
+      
     </div>
   );
 };

@@ -4,6 +4,7 @@ import Footer from './Footer';
 import axios from 'axios';
 import ExistingPatientData from './ExistingPatientData';
 import { useParams } from 'react-router-dom';
+import { Ischeamic } from '../Data/Recommendations';
 
 const ALLOWED_EXTENSIONS = ["jpg", "png", "jpeg"];
 
@@ -15,6 +16,8 @@ const PatientProfile = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const [results, setResults] = useState(null); // To store scan results
+    const [recommendations, setRecommendations] = useState([]); 
+    const [visualization, setVisualization] = useState([]);
 
     const inputRef = useRef(null);
 
@@ -70,6 +73,9 @@ const PatientProfile = () => {
 
   const handleRemoveFile = () => {
         setSelectedFile(null);
+        setVisualization(null);
+        setRecommendations([]);
+        setResults(null);
         // Also reset the file input
         if (inputRef.current) {
             inputRef.current.value = "";
@@ -97,6 +103,19 @@ const PatientProfile = () => {
             });
     };
 
+    const segmentation = (file) => {
+        axios
+            .post('http://127.0.0.1:5000/segment', file, { responseType: "blob" })
+            .then(res => {
+                setVisualization(URL.createObjectURL(res.data));
+            })
+            .catch(err => {
+                setVisualization(null);
+                alert("Segmentation error");
+                console.log(err)
+            })
+    }
+
     const handleUpload = (e) => {
         e.preventDefault();
 
@@ -108,18 +127,28 @@ const PatientProfile = () => {
         setLoading(true);
 
         const data1 = new FormData();
-        data1.append("file", selectedFile);
+        data1.append("image", selectedFile);
 
         axios
             .post('http://127.0.0.1:5000/predict', data1)
             .then(res => {
                 const predicted = {
-                    result: res.data.predicted_class === "Ischemia" ? "Positive" : "Negative",
-                    confidence: `${parseFloat(res.data.confidence * 100).toFixed(2)}%`
+                    result: res.data.predicted_class.toLowerCase() === "ischeamic" ? "Positive" : "Negative",
+                    confidence: res.data.confidence
+                    // confidence: `${parseFloat(res.data.confidence * 100).toFixed(2)}%`
                 }
+                console.log("probabilities_percent: " + JSON.stringify(res.data.probabilities_percent))
                 setResults(predicted);
+                // segmentation(data1);
                 addToHistory(predicted);
                 setLoading(false);
+                if(predicted.result === "Positive") {
+                    segmentation(data1);
+                    setRecommendations(Ischeamic[Math.floor(Math.random() * Ischeamic.length)])
+                }else {
+                    setVisualization(null);
+                    setRecommendations([]);
+                }
             })
             .catch(err => {
                 if(err.response) {
@@ -128,6 +157,7 @@ const PatientProfile = () => {
                     alert("Something went wrong. Kindly try again later.");
                 }
                 setLoading(false);
+                setResults(null);
             })
     };
 
@@ -241,11 +271,32 @@ const PatientProfile = () => {
                         {/* <ResultItem label="Affected Area" value={results.affectedArea} /> */}
 
                         {/* Placeholder for your brain visualization */}
-                        <div className="bg-gray-100 p-5 rounded-lg text-center">
-                            <p className="text-gray-500">
-                                Brain visualization would appear here (simulated).
-                            </p>
-                        </div>
+                        {visualization && (
+                            <div className="bg-gray-100 p-5 rounded-lg text-center flex flex-col items-center justify-center gap-3">
+                                <p className="text-gray-500">
+                                    Brain visualization.
+                                </p>
+                                <img
+                                    src={visualization}
+                                    alt="Brain Visualization"
+                                    className="max-h-60 rounded-lg mb-4 shadow-md"
+                                />
+                            </div>
+                        )}
+                        {recommendations.length > 0 && (
+                            <div className="bg-gray-100 p-5 rounded-lg text-center flex flex-col items-center justify-center gap-3">
+                                <p className="text-gray-500 font-semibold">
+                                    What to Try Next
+                                </p>
+                                {recommendations.map((recommendation, i) => {
+                                    return (
+                                        <p key={i} className='text-left self-start'>{recommendation}</p>
+                                    )
+                                })}
+                            </div>
+                        )}
+
+
                     </div>
                 </div>
             )}
