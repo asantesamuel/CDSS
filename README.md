@@ -2,9 +2,9 @@
 
 - Clone branch with the command "``` git clone --branch flask --single-branch https://github.com/asantesamuel/CDSS.git ```"
 - Use the command "``` cd CDSS ```" to enter project directory
-- Use the command "``` python -m venv myvenv ```" to create a virtual environment
+- Use the command "``` py 3.10 -m venv myvenv ```" to create a virtual environment, make sure you have python version 3.10
 - Run the command "``` .\myvenv\Scripts\Activate ```" to activate the virtual environment
-- Run the command "``` pip install requirements.txt```" to install required dependencies in the virtual environment
+- Run the command "``` pip install -r requirements.txt```" to install required dependencies in the virtual environment
 - Run the command "``` python app.py ```" to run the backend server
-- Import the .h5 file in the root directory, ie ```CDSS/``` and mae sure it is named ```dicom_classifier_best_20250728_140953.h5```
-- Finally you can use the frontend to communicate with the APIs
+- Import the final_stroke_segmentation_model2.pth file and dicom_classifier_best_20250728_140953.h5 file into the root directory, ie ```CDSS/``` and make sure it is named
+- Finally you can run the frontend and node backend to use the app
